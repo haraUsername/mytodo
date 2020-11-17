@@ -7,10 +7,10 @@
     </div>
 
     <ul>
-      <li>
-        <input type="checkbox" />
-        タスク名
-        <button>X</button>
+      <li v-for="(todo, key) in todos" :key="key">
+        <input type="checkbox" v-model="todo.isComplete" @click="updateTodo(todo, key)"/>
+        {{ todo.name }}
+        <button @click="removeTodo(key)">X</button>
       </li>
     </ul>
     </div>
@@ -27,11 +27,19 @@ export default {
       db: null,
       todosRef: null,
       newTodoName: '',
+      todos: {}
      }
    },
   created(){
    this.db = firebase.firestore()
    this.todosRef = this.db.collection('todos')
+   this.todosRef.onSnapshot(querySnapshot => {
+     const obj = {}
+     querySnapshot.forEach(doc => {
+       obj[doc.id] = doc.data() //doc.id=firestoreのID=todosのとこ doc.data=firestoreのデータのとこ
+     }) //querySnapshot=現在のtodoに入れたデータ
+     this.todos = obj
+   })
       },
   methods: {
     addTodo(){
@@ -40,6 +48,13 @@ export default {
         name: this.newTodoName,
         isComplete: false,
       })
+    },
+    updateTodo(todo, key){
+      todo.isComplete = !todo.isComplete //現在のisCompleteの状態を反転
+      this.todosRef.doc(key).update(todo)
+    },
+    removeTodo(key){
+      this.todosRef.doc(key).delete()
     }
   }
     }

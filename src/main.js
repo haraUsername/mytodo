@@ -1,11 +1,12 @@
-import { createApp } from 'vue'
+import {
+  createApp
+} from 'vue'
 import App from './App.vue'
 import firebase from 'firebase'
 
-createApp(App).mount('#app')
 
- // Your web app's Firebase configuration
- var firebaseConfig = {
+// Your web app's Firebase configuration
+var firebaseConfig = {
   apiKey: "AIzaSyCUKF92WlHse8v3PKdtTJ2JEdTrm_zNi2A",
   authDomain: "vue-todo-106ed.firebaseapp.com",
   databaseURL: "https://vue-todo-106ed.firebaseio.com",
@@ -17,3 +18,6 @@ createApp(App).mount('#app')
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
+
+createApp(App).mount('#app')
